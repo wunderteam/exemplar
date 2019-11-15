@@ -59,7 +59,6 @@ def get_failing_specs(token, options, cache, filename)
   unless failures
     command = "curl --fail --silent -u #{token}: \"https://circleci.com/api/v1.1/project/github/#{team}/#{project}/#{build_num}/tests\""
 
-    puts command
     STDERR.puts({ command: command }) if debug
     stdout, stderr, status = Open3.capture3(command);nil
     if status.exitstatus.zero?
