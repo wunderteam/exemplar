@@ -6,7 +6,9 @@
     "@rails/activestorage": "^6.0.0-alpha",
     "@rails/ujs": "^6.0.0-alpha",
     "@rails/webpacker": "5",
-    "turbolinks": "^5.2.0"
+    "sockjs": "0.3.20",
+    "turbolinks": "^5.2.0",
+    "y18n": "4.0.1"
   },
   "version": "0.1.0",
   "devDependencies": {
