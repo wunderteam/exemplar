@@ -208,7 +208,7 @@ DEPENDENCIES
   jbuilder (~> 2.11)
   listen (>= 3.0.5, < 3.2)
   puma (= 5.6.4)
-  rails (~> 6.0.4.2)
+  rails (~> 6.0.4.7)
   sass-rails (~> 6)
   selenium-webdriver
   spring
