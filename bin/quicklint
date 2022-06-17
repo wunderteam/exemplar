@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Usage:
+# ./quicklint -h
+
+require "optparse"
+
+def run!(args)
+  options = {}
+  parser = OptionParser.new do |opts|
+    opts.banner = "quicklint: Lints only the files that have changed\n\nUsage: quicklint <tool> [<options>]\n\nValid tools are 'ruby', 'slim', 'js', 'ts', 'scss'\n\n"
+
+    opts.on("--fix", "Fix errors (only supported by 'js', 'ts', and 'ruby' modes).") do |f|
+      options[:fix] = f
+    end
+    opts.on("-g", "--git [GIT OBJECT]", "Git object (sha, branch name, etc) for the diff. By default, diff will include all changes in this branch.") do |g|
+      options[:git_object] = g
+    end
+
+    opts.on("-h", "--help", "Prints this help.") do
+      puts opts
+      exit 1
+    end
+  end
+  parser.parse!(args)
+
+  tool = args[0]
+  fix = options[:fix]
+  git_object = options[:git_object] || "$(git merge-base origin/master head)"
+
+  git_diff_cmd = "git diff --name-only #{git_object} --diff-filter=AMR"
+
+  case tool
+  when "ruby"
+    exec(%(#{git_diff_cmd} | grep ".rb" | grep -v 'schema.rb' | xargs bundle exec rubocop #{fix ? '--auto-correct' : ''}))
+  when "slim"
+    exec(%(#{git_diff_cmd} -- app/views | xargs bundle exec slim-lint))
+  when "js"
+    exec(%(#{git_diff_cmd} | grep -E '\\.jsx?' | xargs yarn standard #{fix ? '--fix' : ''}))
+  when "ts"
+    exec(%(#{git_diff_cmd} | grep -E '\\.tsx?' | xargs yarn eslint #{fix ? '--fix' : ''}))
+  when "scss"
+    exec(%(#{git_diff_cmd} | grep '.scss' | bundle exec scss-lint))
+  else
+    puts parser
+  end
+end
+
+run!(ARGV)
