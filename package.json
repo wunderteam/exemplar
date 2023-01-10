@@ -5,7 +5,7 @@
     "@rails/actioncable": "^6.0.0-alpha",
     "@rails/activestorage": "^6.0.0-alpha",
     "@rails/ujs": "^6.0.0-alpha",
-    "@rails/webpacker": "6.0.0.rc.5",
+    "@rails/webpacker": "6.0.0.rc.6",
     "minimatch": "3.0.5",
     "sockjs": "0.3.20",
     "turbolinks": "^5.2.0",
